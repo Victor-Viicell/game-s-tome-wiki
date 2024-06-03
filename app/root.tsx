@@ -4,16 +4,18 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-} from "@remix-run/react";
+} from '@remix-run/react';
 
 // Components
-import Navbar from "./components/navbar";
+import Navbar from './components/navbar';
+import Xresize from './components/xresize';
+import Sidebar from './components/sidebar';
+import Container from './components/container';
 
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction } from '@remix-run/node';
 import './tailwind.css';
 
-export const links: LinksFunction = () => [
-];
+export const links: LinksFunction = () => [];
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -24,9 +26,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="bg-gd-prop">
+      <body className="bg-gd-prop flex h-screen w-screen flex-col overflow-hidden">
         <Navbar />
-        {children}
+        <div className="flex h-full w-full flex-row overflow-hidden">
+          <Xresize>
+            <Sidebar />
+          </Xresize>
+          <Container>{children}</Container>
+        </div>
         <ScrollRestoration />
         <Scripts />
       </body>
