@@ -48,7 +48,7 @@ export function LinkButtons() {
         title="GAMES"
         icon={<IoLogoGameControllerB className="h-full w-full text-gd-white" />}
         description="Games"
-        route="/wikis"
+        route="wikis"
         bgColor="bg-gd-violet"
       />
       <LinkButton
@@ -57,7 +57,7 @@ export function LinkButtons() {
           <MdOutlineOndemandVideo className="h-full w-full text-gd-white" />
         }
         description="Videos"
-        route="/main/videos"
+        route="videos"
         bgColor="bg-gd-red"
       />
       <LinkButton
