@@ -19,7 +19,7 @@ import './tailwind.css';
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "GAME'S TOME" },
+    { title: "Game's Tome" },
   ];
 };
 
