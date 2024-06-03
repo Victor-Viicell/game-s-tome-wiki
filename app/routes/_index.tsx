@@ -1,16 +1,9 @@
-import type { MetaFunction } from '@remix-run/node';
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: 'New Remix App' },
-    { name: 'description', content: 'Welcome to Remix!' },
-  ];
-};
+import Layer1 from '../components/lobby/layer_1';
 
 export default function Index() {
   return (
-    <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.8' }}>
-      <h1>Welcome to Remix</h1>
+    <div>
+      <Layer1 />
     </div>
   );
 }

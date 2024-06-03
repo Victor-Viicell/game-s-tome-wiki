@@ -6,6 +6,8 @@ import {
   ScrollRestoration,
 } from '@remix-run/react';
 
+import type { MetaFunction } from '@remix-run/node';
+
 // Components
 import Navbar from './components/navbar';
 import Xresize from './components/xresize';
@@ -14,6 +16,12 @@ import Container from './components/container';
 
 import type { LinksFunction } from '@remix-run/node';
 import './tailwind.css';
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "GAME'S TOME" },
+  ];
+};
 
 export const links: LinksFunction = () => [];
 
