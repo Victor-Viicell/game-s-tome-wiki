@@ -13,4 +13,11 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        format: 'esm',  // Ensure the format is ES module
+      },
+    },
+  },
 });
