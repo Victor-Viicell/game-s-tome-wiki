@@ -10,10 +10,9 @@ import {
 import Navbar from "./components/navbar";
 
 import type { LinksFunction } from "@remix-run/node";
-import stylesheet from "~/tailwind.css?url";
+import './tailwind.css';
 
 export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: stylesheet },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -25,7 +24,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="bg-gd-prop">
         <Navbar />
         {children}
         <ScrollRestoration />
