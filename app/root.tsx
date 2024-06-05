@@ -23,7 +23,9 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const links: LinksFunction = () => [];
+export const links: LinksFunction = () => [
+  { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Victor+Mono&display=swap' },
+];
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -34,7 +36,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="bg-gd-prop flex h-screen w-screen flex-col overflow-hidden">
+      <body className="bg-gd-prop flex h-screen w-screen flex-col overflow-hidden pb-1 px-1">
         <Navbar />
         <div className="flex h-full w-full flex-row overflow-hidden">
           <Xresize>

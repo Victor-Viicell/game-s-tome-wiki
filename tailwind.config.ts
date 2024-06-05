@@ -25,7 +25,10 @@ export default {
         'gd-unchecked-toggle': '#45484Eff',
         'gd-collapsable': '#4C535Eff'
       },
-      fontFamily: {},
+      fontFamily: {
+        'press-start-2p': ['"Press Start 2P"', 'cursive'],
+        'victor-mono': ['"Victor Mono"', 'monospace']
+      },
     },
   },
   plugins: [],

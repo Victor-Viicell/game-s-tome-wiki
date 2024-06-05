@@ -29,10 +29,10 @@ export function LinkButton(props: Links) {
       </div>
       <div className="group flex h-full w-full flex-row gap-1 rounded-sm bg-gd-content p-1 xl:flex-col">
         <div className="flex h-full w-full flex-col">
-          <p className="h-fit w-full rounded-sm bg-gd-header-1 px-2 py-1 text-center font-victor-mono text-[10px] font-bold text-gd-white">
+          <p className="h-fit w-full rounded-sm bg-gd-header-1 px-1 py-1 text-center font-victor-mono text-[10px] font-bold text-gd-white">
             {title}
           </p>
-          <p className="bg-gd-header-3 h-fit w-full rounded-sm px-2 py-1 text-center font-victor-mono text-[5px] text-gd-white">
+          <p className="bg-gd-header-3 h-fit w-full rounded-sm px-2 py-1 text-center font-victor-mono text-[10px] text-gd-white">
             {description}
           </p>
         </div>

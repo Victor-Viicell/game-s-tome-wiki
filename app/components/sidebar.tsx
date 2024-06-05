@@ -1,6 +1,6 @@
 export function OpenWiki() {
   return (
-    <div className="flex h-full w-full flex-1 flex-col rounded-sm bg-gd-content p-1">
+    <div className="flex h-full w-full flex-1 flex-col rounded-sm bg-gd-content p-1 rounded-br-2xl">
       <p className="h-fit w-full rounded-sm bg-gd-header-1 text-center text-gd-white">
         Paginas Abertas
       </p>
