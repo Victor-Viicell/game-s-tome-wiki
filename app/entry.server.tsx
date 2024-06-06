@@ -12,6 +12,18 @@ import { RemixServer } from "@remix-run/react";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 
+import mongoose from 'mongoose';
+
+async function connectDB() {
+  try {await mongoose.connect('mongodb+srv://Viicell:88791808@gamestomedb.f3gvo3z.mongodb.net/?retryWrites=true&w=majority&appName=GamesTomeDB');
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+connectDB();
+
 const ABORT_DELAY = 5_000;
 
 export default function handleRequest(
