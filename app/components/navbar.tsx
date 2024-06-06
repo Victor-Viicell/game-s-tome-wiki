@@ -19,7 +19,7 @@ export function Search() {
         <BsSearch className="absolute left-[0.3rem] text-xl text-gray-400" />
         <input 
         type="text"
-        className="w-full py-0.5 text-gray-400 focus:text-gd-white rounded-md pl-8 bg-gd-container-nav focus:outline-none font-victor-mono" 
+        className="w-full py-0.5 text-gray-400 focus:text-gd-white rounded-sm pl-8 bg-gd-container-nav focus:outline-none font-victor-mono" 
         placeholder="Search"/>
       </div>
     </div>
@@ -38,8 +38,8 @@ export function LoginSignin() {
   return (
     <div className="flex h-full items-center flex-0">
       <div>
-        <Link to="login" className="text-gd-white font-victor-mono px-2 py-1 rounded-md mx-1 bg-gd-container hover:bg-gd-container-selected transition-colors">Login</Link>
-        <Link to="signin" className="text-gd-white font-victor-mono px-2 py-1 rounded-md mx-1 bg-gd-prop-blue hover:bg-gd-selected-blue transition-colors">Signin</Link>
+        <Link to="login" className="text-gd-white font-victor-mono px-2 py-1 rounded-sm mx-1 bg-gd-container hover:bg-gd-container-selected transition-colors">Login</Link>
+        <Link to="signin" className="text-gd-white font-victor-mono px-2 py-1 rounded-sm mx-1 bg-gd-prop-blue hover:bg-gd-selected-blue transition-colors">Signin</Link>
       </div>
     </div>
   );

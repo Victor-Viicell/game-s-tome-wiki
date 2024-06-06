@@ -48,30 +48,28 @@ export function LinkButtons() {
         title="GAMES"
         icon={<IoLogoGameControllerB className="h-full w-full text-gd-white" />}
         description="Games"
-        route="wikis"
+        route="/app/wikis"
         bgColor="bg-gd-violet"
       />
       <LinkButton
         title="VIDEOS"
-        icon={
-          <MdOutlineOndemandVideo className="h-full w-full text-gd-white" />
-        }
+        icon={<MdOutlineOndemandVideo className="h-full w-full text-gd-white" />}
         description="Videos"
-        route="videos"
+        route="/app/videos"
         bgColor="bg-gd-red"
       />
       <LinkButton
         title="LANÇAMENTOS"
         icon={<MdNewReleases className="h-full w-full text-gd-white" />}
         description="Lancamentos"
-        route="/main/lancamentos"
+        route="/app/lancamentos"
         bgColor="bg-gd-green"
       />
       <LinkButton
         title="DISCORD"
         icon={<FaDiscord className="h-full w-full text-gd-white" />}
         description="Discord"
-        route="/main/lobby"
+        route="/app/lobby"
         bgColor="bg-gd-purple"
       />
     </div>

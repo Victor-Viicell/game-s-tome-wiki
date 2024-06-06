@@ -1,9 +1,10 @@
-import Layer1 from '../components/lobby/layer_1';
+import { redirect } from "@remix-run/react";
+import App from "./app";
+
+export function loader () {
+  return redirect('/app/lobby')
+}
 
 export default function Index() {
-  return (
-    <div>
-      <Layer1 />
-    </div>
-  );
+  return <App />;
 }
