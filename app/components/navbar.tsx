@@ -18,7 +18,7 @@ export function Search() {
       <div className=" relative flex w-[80%] h-full items-center justify-center">
         <BsSearch className="absolute left-[0.3rem] text-xl text-gray-400" />
         <input 
-        type="text"
+        type="search"
         className="w-full py-0.5 text-gray-400 focus:text-gd-white rounded-sm pl-8 bg-gd-container-nav focus:outline-none font-victor-mono" 
         placeholder="Search"/>
       </div>
