@@ -27,7 +27,7 @@ export default function Filter() {
         <input
           type="text"
           placeholder="Pesquisar tags"
-          className="h-full w-full rounded-r-sm bg-gd-container-nav p-1 placeholder-gd-white placeholder:opacity-50 focus:bg-gd-container-selected focus:outline-none"
+          className="h-full w-full rounded-r-sm bg-gd-container-nav py-1 px-2 placeholder-gd-white placeholder:opacity-50 focus:bg-gd-container-selected focus:outline-none"
         />
       </div>
     </div>

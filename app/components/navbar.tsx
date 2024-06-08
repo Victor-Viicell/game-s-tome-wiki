@@ -1,3 +1,4 @@
+import { FiLogIn } from "react-icons/fi"; 
 import { BsSearch } from "react-icons/bs"; 
 import { Link } from "@remix-run/react";
 
@@ -36,11 +37,10 @@ export function User() {
 
 export function LoginSignin() {
   return (
-    <div className="flex h-full items-center flex-0">
-      <div>
-        <Link to="login" className="text-gd-white font-victor-mono px-2 py-1 rounded-sm mx-1 bg-gd-container hover:bg-gd-container-selected transition-colors">Login</Link>
-        <Link to="signin" className="text-gd-white font-victor-mono px-2 py-1 rounded-sm mx-1 bg-gd-prop-blue hover:bg-gd-selected-blue transition-colors">Signin</Link>
-      </div>
+    <div className="flex items-center flex-0">
+        <Link to="/app/account/login" className="flex h-full items-center justify-center bg-gd-prop-blue hover:bg-gd-selected-blue text-gd-white px-2 rounded-sm py-0.5 gap-1">
+        <p>Entrar</p> <FiLogIn />
+        </Link>
     </div>
   );
 }

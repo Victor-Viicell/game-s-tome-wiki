@@ -7,13 +7,13 @@ export default function app_account() {
         <div className="flex flex-row gap-1">
           <NavLink
             to={'/app/account/login'}
-            className="flex w-fit items-center justify-center rounded-sm bg-gd-collapsable px-2 text-gd-white hover:bg-gd-container-nav focus:bg-gd-container-nav"
+            className="flex w-fit items-center justify-center rounded-sm bg-gd-collapsable px-2 text-gd-white hover:bg-gd-container-nav"
           >
             Login
           </NavLink>
           <NavLink
             to={'/app/account/signin'}
-            className="flex w-fit items-center justify-center rounded-sm bg-gd-collapsable px-2 text-gd-white"
+            className="flex w-fit items-center justify-center rounded-sm bg-gd-collapsable px-2 text-gd-white hover:bg-gd-container-nav"
           >
             Signin
           </NavLink>
