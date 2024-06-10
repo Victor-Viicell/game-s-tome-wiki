@@ -5,6 +5,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   
   plugins: [
+    
     remix({
       future: {
         v3_fetcherPersist: true,
@@ -14,6 +15,9 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  ssr: {
+    external: ['mock-aws-s3', 'aws-sdk', 'nock'],
+  },
   build: {
     rollupOptions: {
       output: {

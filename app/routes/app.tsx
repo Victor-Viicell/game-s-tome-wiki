@@ -1,8 +1,7 @@
 import { Outlet } from '@remix-run/react';
 import Navbar from '~/components/navbar';
-import Xresize from './../components/xresize';
+import {Xresize, Container} from './../components/generalcomponents';
 import Sidebar from '~/components/sidebar';
-import Container from './../components/container';
 
 export default function App() {
   return (

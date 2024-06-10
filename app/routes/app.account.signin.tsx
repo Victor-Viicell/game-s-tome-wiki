@@ -1,4 +1,4 @@
-import Signin from "~/components/profile/signin/signin";
+import { Signin } from '../components/account/signin';
 
 export default function app_account_login() {
   return (

@@ -1,56 +1,52 @@
-import { FiLogIn } from "react-icons/fi"; 
-import { BsSearch } from "react-icons/bs"; 
-import { Link } from "@remix-run/react";
+import { BsSearch } from 'react-icons/bs';
+import { Link } from '@remix-run/react';
 
 export function Logo() {
   return (
-    <Link to={"/"} className="flex h-full items-center flex-0">
+    <Link to={'/'} className="flex-0 flex h-full items-center justify-center">
       <div className="flex h-full items-center justify-center">
-        <img src="/game-s-tome-logo.svg" alt="" className="h-[80%]"/>
+        <img src="/game-s-tome-logo.svg" alt="" className="h-[80%]" />
       </div>
-      <h1 className="text-xl font-bold font-press-start-2p text-gd-white px-2">GAME'S TOME</h1>
+      <h1 className="px-2 font-press-start-2p text-xl font-bold text-gd-white">
+        GAME'S TOME
+      </h1>
     </Link>
   );
 }
 
 export function Search() {
   return (
-    <div className="flex h-full items-center justify-center flex-1">
-      <div className=" relative flex w-[80%] h-full items-center justify-center">
+    <div className="flex h-full flex-1 items-center justify-center">
+      <div className="relative flex h-full w-[80%] items-center justify-center">
         <BsSearch className="absolute left-[0.3rem] text-xl text-gray-400" />
-        <input 
-        type="search"
-        className="w-full py-0.5 text-gray-400 focus:text-gd-white rounded-sm pl-8 bg-gd-container-nav focus:outline-none font-victor-mono" 
-        placeholder="Search"/>
+        <input
+          type="search"
+          className="w-full rounded-sm bg-gd-container-nav py-0.5 pl-8 font-victor-mono text-gray-400 focus:text-gd-white focus:outline-none"
+          placeholder="Search"
+        />
       </div>
     </div>
   );
 }
 
-export function User() {
+export function AuthButtons() {
   return (
-    <div className="flex h-full items-center flex-0 border-l border-gd-red">
-
-    </div>
-  );
-}
-
-export function LoginSignin() {
-  return (
-    <div className="flex items-center flex-0">
-        <Link to="/app/account/login" className="flex h-full items-center justify-center bg-gd-prop-blue hover:bg-gd-selected-blue text-gd-white px-2 rounded-sm py-0.5 gap-1">
-        <p>Entrar</p> <FiLogIn />
-        </Link>
+    <div className="flex h-full flex-0 items-center justify-center">
+      <Link to="/app/account/login"
+        className="flex rounded-sm bg-gd-white px-4 py-1 font-semibold text-gd-container-nav"
+      >
+        Entrar
+      </Link>
     </div>
   );
 }
 
 export default function Navbar() {
   return (
-    <nav className="flex h-12 items-center justify-between w-full">
+    <nav className="flex h-12 w-full items-center justify-between">
       <Logo />
       <Search />
-      <LoginSignin />
+      <AuthButtons />
     </nav>
   );
 }
