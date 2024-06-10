@@ -8,9 +8,15 @@ interface InputFieldProps {
   placeholder: string;
   type: string;
   icon: React.ReactNode;
+  name: string;
 }
 
-const InputField: React.FC<InputFieldProps> = ({ placeholder, type, icon }) => (
+const InputField: React.FC<InputFieldProps> = ({
+  placeholder,
+  type,
+  icon,
+  name,
+}) => (
   <div className="flex w-full flex-row gap-1 rounded-sm">
     <div className="flex items-center justify-center rounded-sm bg-gd-header-1 px-2 text-gd-white">
       {icon}
@@ -20,6 +26,7 @@ const InputField: React.FC<InputFieldProps> = ({ placeholder, type, icon }) => (
       placeholder={placeholder}
       type={type}
       className="w-full rounded-sm bg-gd-container-nav px-2 text-gd-white"
+      name={name}
     />
   </div>
 );
@@ -48,10 +55,11 @@ export function Signin() {
           <p className="rounded-sm bg-gd-header-1 p-1 px-2 text-center font-victor-mono font-semibold text-gd-white">
             Signin
           </p>
-          <InputField placeholder="Usuário" type="text" icon={<FaUserEdit className="aspect-square" />} />
-          <InputField placeholder="Email" type="email" icon={<MdAlternateEmail className="aspect-square" />} />
-          <InputField placeholder="Senha" type="password" icon={<RiLockPasswordFill className="aspect-square" />} />
-          <InputField placeholder="Confirme a Senha" type="password" icon={<MdOutlinePassword className="aspect-square" />} />
+          <InputField placeholder="Nome" type="text" icon={<FaUserEdit className="aspect-square" />} name="name" />
+          <InputField placeholder="Usuário" type="text" icon={<FaUserEdit className="aspect-square" />} name="username" />
+          <InputField placeholder="Email" type="email" icon={<MdAlternateEmail className="aspect-square" />} name="email" />
+          <InputField placeholder="Senha" type="password" icon={<RiLockPasswordFill className="aspect-square" />} name="password" />
+          <InputField placeholder="Confirme a Senha" type="password" icon={<MdOutlinePassword className="aspect-square" />} name="confirmPassword" />
         </div>
         <SubmitButton>Criar Conta</SubmitButton>
       </Form>
