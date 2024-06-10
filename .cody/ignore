@@ -3,4 +3,3 @@ package-lock.json
 README.md
 postcss.config.js
 tsconfig.json
-vite.config.ts

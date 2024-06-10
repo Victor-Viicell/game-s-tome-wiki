@@ -1,4 +1,3 @@
-// app/routes/app.account.tsx
 import { NavLink, Outlet } from '@remix-run/react';
 
 export default function AppAccount() {

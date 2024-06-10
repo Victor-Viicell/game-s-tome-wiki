@@ -1,6 +1,6 @@
 import { RiLockPasswordFill } from 'react-icons/ri';
 import { FaUserEdit } from 'react-icons/fa';
-import { Form } from '@remix-run/react';
+import { Form, useActionData } from '@remix-run/react';
 import { MdOutlinePassword } from 'react-icons/md';
 import { MdAlternateEmail } from 'react-icons/md';
 
@@ -44,23 +44,46 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({ children }) => (
 );
 
 export function Signin() {
+  const actionData = useActionData<{ error?: string, success?: string }>();
+
   return (
     <div className="flex flex-col gap-1 bg-gd-container">
-      <Form
-        method="post"
-        action="/login"
-        className="flex flex-col items-center gap-1"
-      >
+      <Form method="post" className="flex flex-col items-center gap-1">
         <div className="flex w-full flex-col gap-1 bg-gd-content p-1">
           <p className="rounded-sm bg-gd-header-1 p-1 px-2 text-center font-victor-mono font-semibold text-gd-white">
             Signin
           </p>
-          <InputField placeholder="Nome" type="text" icon={<FaUserEdit className="aspect-square" />} name="name" />
-          <InputField placeholder="Usuário" type="text" icon={<FaUserEdit className="aspect-square" />} name="username" />
-          <InputField placeholder="Email" type="email" icon={<MdAlternateEmail className="aspect-square" />} name="email" />
-          <InputField placeholder="Senha" type="password" icon={<RiLockPasswordFill className="aspect-square" />} name="password" />
-          <InputField placeholder="Confirme a Senha" type="password" icon={<MdOutlinePassword className="aspect-square" />} name="confirmPassword" />
+          <InputField
+            placeholder="Usuário"
+            type="text"
+            icon={<FaUserEdit className="aspect-square" />}
+            name="username"
+          />
+          <InputField
+            placeholder="Email"
+            type="email"
+            icon={<MdAlternateEmail className="aspect-square" />}
+            name="email"
+          />
+          <InputField
+            placeholder="Senha"
+            type="password"
+            icon={<RiLockPasswordFill className="aspect-square" />}
+            name="password"
+          />
+          <InputField
+            placeholder="Confirme a Senha"
+            type="password"
+            icon={<MdOutlinePassword className="aspect-square" />}
+            name="confirmPassword"
+          />
         </div>
+        {actionData?.error && (
+          <p className="text-red-500">{actionData.error}</p>
+        )}
+        {actionData?.success && (
+          <p className="text-green-500">{actionData.success}</p>
+        )}
         <SubmitButton>Criar Conta</SubmitButton>
       </Form>
     </div>

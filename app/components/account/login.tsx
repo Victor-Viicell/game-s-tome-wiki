@@ -1,6 +1,6 @@
 import { RiLockPasswordFill } from 'react-icons/ri';
 import { FaUserEdit } from 'react-icons/fa';
-import { Form } from '@remix-run/react';
+import { Form, useActionData } from '@remix-run/react';
 
 interface InputFieldProps {
   placeholder: string;
@@ -43,6 +43,8 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({ children }) => (
 );
 
 export function Login() {
+  const actionData = useActionData<{ error?: string, success?: string }>();
+
   return (
     <div className="flex flex-col gap-1 bg-gd-container">
       <Form method="post" className="flex flex-col items-center gap-1">
@@ -53,6 +55,12 @@ export function Login() {
           <InputField placeholder="Usuário" type="text" icon={<FaUserEdit className="aspect-square" />} name="username" />
           <InputField placeholder="Senha" type="password" icon={<RiLockPasswordFill className="aspect-square" />} name="password" />
         </div>
+        {actionData?.error && (
+          <p className="text-red-500">{actionData.error}</p>
+        )}
+        {actionData?.success && (
+          <p className="text-green-500">{actionData.success}</p>
+        )}
         <SubmitButton>Entrar</SubmitButton>
       </Form>
     </div>
