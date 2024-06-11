@@ -5,8 +5,10 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 
 export default defineConfig({
   plugins: [
+    
     createHtmlPlugin(),
     remix({
+      
       future: {
         v3_fetcherPersist: true,
         v3_relativeSplatPath: true,

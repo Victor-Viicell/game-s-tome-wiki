@@ -1,7 +1,7 @@
 import { json, createCookie } from '@remix-run/node';
 import jwt from 'jsonwebtoken';
 
-const sessionCookie = createCookie('session', {
+export const sessionCookie = createCookie('session', {
   maxAge: 60 * 60, // 1 hour
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
@@ -23,3 +23,4 @@ export async function requireUserSession(request: Request) {
     throw json({ error: 'Sessão inválida' }, { status: 401 });
   }
 }
+

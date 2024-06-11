@@ -4,7 +4,7 @@ import { FaFilter } from 'react-icons/fa';
 
 export default function Filter() {
   return (
-    <div className="flex- flex h-8 w-full items-center gap-2 text-nowrap rounded-sm bg-gd-container p-1 text-[12px]">
+    <div className="flex- flex h-8 w-full items-center gap-2 text-nowrap rounded-sm bg-gd-header-1 p-1 text-[12px]">
       <div className="flex h-full flex-row items-center justify-center gap-1 rounded-sm bg-gd-collapsable px-2 text-gd-white">
         <FaFilter />
         <p>Filtro</p>

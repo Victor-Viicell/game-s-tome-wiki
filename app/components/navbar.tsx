@@ -1,5 +1,5 @@
 import { BsSearch } from 'react-icons/bs';
-import { Link } from '@remix-run/react';
+import { Link, useLoaderData } from '@remix-run/react';
 
 export function Logo() {
   return (
@@ -30,13 +30,35 @@ export function Search() {
 }
 
 export function AuthButtons() {
+  const { user } = useLoaderData<{ user: { id: string, username: string } | null }>();
+
   return (
-    <div className="flex h-full flex-0 items-center justify-center">
-      <Link to="/app/account/login"
-        className="flex rounded-sm bg-gd-white px-4 py-1 font-semibold text-gd-container-nav"
-      >
-        Entrar
-      </Link>
+    <div className="flex h-full flex-0 items-center justify-center gap-2">
+      {user ? (
+        <>
+          <Link
+            to="/app/profile"
+            className="flex rounded-sm bg-gd-white px-4 py-1 font-semibold text-gd-container-nav"
+          >
+            {user.username}
+          </Link>
+          <form action="/app/account/logout" method="post">
+            <button
+              type="submit"
+              className="flex rounded-sm bg-gd-white px-4 py-1 font-semibold text-gd-container-nav"
+            >
+              Sair
+            </button>
+          </form>
+        </>
+      ) : (
+        <Link
+          to="/app/account/login"
+          className="flex rounded-sm bg-gd-white px-4 py-1 font-semibold text-gd-container-nav"
+        >
+          Entrar
+        </Link>
+      )}
     </div>
   );
 }
