@@ -23,4 +23,3 @@ export async function requireUserSession(request: Request) {
     throw json({ error: 'Sessão inválida' }, { status: 401 });
   }
 }
-

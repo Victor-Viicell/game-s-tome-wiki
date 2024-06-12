@@ -1,39 +1,92 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RiFileUploadFill } from 'react-icons/ri';
 import { FaUserAlt } from 'react-icons/fa';
 import { MdOutlineDriveFileRenameOutline } from 'react-icons/md';
 import { Form, useLoaderData, useActionData } from '@remix-run/react';
 import type { LoaderFunction, ActionFunction } from '@remix-run/node';
 import { requireUserSession } from '../utils/session';
-import { getUserByUsername, createArchive } from '~/utils/db';
+import { getUserByUsername, getArchiveById, updateArchive, getAuthorByArchiveId } from '~/utils/db';
 import { json, redirect } from '@remix-run/node';
 import placeholderPerfil from '/s-l400.jpg';
+import { isUserAuthorOfArchive } from '~/utils/db';
 
-export const loader: LoaderFunction = async ({ request }) => {
-  const sessionUser = await requireUserSession(request);
+export const loader: LoaderFunction = async ({ request, params }) => {
+  const archive = await getArchiveById(params.archiveId as string);
 
-  if (typeof sessionUser === 'object' && sessionUser.username) {
-    const user = await getUserByUsername(sessionUser.username);
-
-    if (!user) {
-      throw json({ error: 'Usuário não encontrado' }, { status: 404 });
-    }
-
-    return json({
-      user: {
-        id: user._id,
-        username: user.username,
-        stars: user.stars,
-        mentions: user.mentions,
-        archives: user.archives,
-      },
-    });
-  } else {
-    throw json({ error: 'Sessão de usuário inválida' }, { status: 401 });
+  if (!archive) {
+    throw json({ error: 'Arquivo não encontrado' }, { status: 404 });
   }
+
+  let user = null;
+  let isAuthor = false;
+  let author = null;
+
+  try {
+    const sessionUser = await requireUserSession(request);
+    if (typeof sessionUser === 'object' && sessionUser.username) {
+      user = await getUserByUsername(sessionUser.username);
+      if (
+        typeof user === 'object' &&
+        user &&
+        user._id &&
+        typeof archive === 'object' &&
+        archive._id
+      ) {
+        isAuthor = await isUserAuthorOfArchive(
+          user._id.toString(),
+          archive._id.toString(),
+        );
+      }
+    }
+  } catch (error) {
+    // Usuário não autenticado, continuar sem erro
+  }
+
+  if (!isAuthor) {
+    author = await getAuthorByArchiveId(params.archiveId as string);
+  }
+
+  return json({
+    user:
+      typeof user === 'object' && user && user._id
+        ? {
+            id: user._id,
+            username: user.username,
+            stars: user.stars,
+            mentions: user.mentions,
+            archives: user.archives,
+          }
+        : null,
+    archive,
+    isAuthor,
+    author: author ? author.username : null,
+  });
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({ request, params }) => {
+  const sessionUser = await requireUserSession(request);
+  let user = null;
+
+  if (typeof sessionUser === 'object' && sessionUser.username) {
+    user = await getUserByUsername(sessionUser.username);
+  }
+
+  if (!user || typeof user !== 'object') {
+    return json({ error: 'Usuário não encontrado' }, { status: 404 });
+  }
+
+  const isAuthor =
+    typeof user === 'object' && user._id
+      ? await isUserAuthorOfArchive(
+          user._id.toString(),
+          params.archiveId as string,
+        )
+      : false;
+
+  if (!isAuthor) {
+    return json({ error: 'Acesso negado' }, { status: 403 });
+  }
+
   const formData = await request.formData();
   const title = formData.get('title') as string;
   const content = formData.getAll('content') as string[];
@@ -46,12 +99,17 @@ export const action: ActionFunction = async ({ request }) => {
     return json({ error: 'Todos os campos são obrigatórios' }, { status: 400 });
   }
 
-  const success = await createArchive(title, content.join('\n'), userId, description);
+  const success = await updateArchive(
+    params.archiveId as string,
+    title,
+    content.join('\n'),
+    description,
+  );
 
   if (success) {
     return redirect('/app/wikis/files');
   } else {
-    return json({ error: 'Erro ao criar arquivo' }, { status: 500 });
+    return json({ error: 'Erro ao atualizar arquivo' }, { status: 500 });
   }
 };
 
@@ -61,6 +119,8 @@ export function ArchiveData({
   type,
   data_name,
   data_type,
+  defaultValue,
+  readOnly,
 }: any) {
   return (
     <div className="flex w-full flex-row items-center gap-1 rounded-sm text-gd-white">
@@ -74,7 +134,9 @@ export function ArchiveData({
           placeholder={data_type}
           type={type}
           name={data_name}
+          defaultValue={defaultValue}
           className="w-full rounded-sm bg-gd-container-nav px-2 text-gd-white"
+          readOnly={readOnly}
         />
       </div>
     </div>
@@ -99,15 +161,30 @@ export function NoInputField({ icon, bg_color, data, data_type }: any) {
   );
 }
 
-export function TextBox() {
-  const [textBoxes, setTextBoxes] = useState([
-    { id: Date.now(), value: '', rows: 1, isRow: false },
-  ]);
+export function TextBox({
+  defaultValue,
+  readOnly,
+  isAuthor,
+}: {
+  defaultValue: string;
+  readOnly: boolean;
+  isAuthor: boolean;
+}) {
+  const [textBoxes, setTextBoxes] = useState(
+    defaultValue.split('\n').map((line, index) => ({
+      id: index,
+      value: line,
+      rows: 1,
+      isRow: false,
+    }))
+  );
 
   const handleKeyDown = (
     event: React.KeyboardEvent<HTMLTextAreaElement>,
     id: number,
   ) => {
+    if (readOnly) return;
+
     setTextBoxes((prevTextBoxes) =>
       prevTextBoxes.map((textBox) => {
         if (textBox.id === id) {
@@ -134,6 +211,8 @@ export function TextBox() {
     event: React.ChangeEvent<HTMLTextAreaElement>,
     id: number,
   ) => {
+    if (readOnly) return;
+
     const { value } = event.target;
     setTextBoxes((prevTextBoxes) =>
       prevTextBoxes.map((textBox) =>
@@ -143,19 +222,21 @@ export function TextBox() {
   };
 
   const addTextBox = () => {
-    setTextBoxes([...textBoxes, { id: Date.now(), value: '', rows: 1, isRow: false }]);
-  };
+    if (readOnly) return;
 
-  const removeTextBox = (id: number) => {
-    setTextBoxes((prevTextBoxes) =>
-      prevTextBoxes.filter((textBox) => textBox.id !== id),
-    );
+    setTextBoxes([
+      ...textBoxes,
+      { id: Date.now(), value: '', rows: 1, isRow: false },
+    ]);
   };
 
   return (
     <div className="flex w-full flex-col gap-1 rounded-sm">
       {textBoxes.map((textBox) => (
-        <div key={textBox.id} className={`flex w-full ${textBox.isRow ? 'flex-row' : 'flex-col'} gap-1 rounded-sm bg-gd-content p-1`}>
+        <div
+          key={textBox.id}
+          className={`flex w-full ${textBox.isRow ? 'flex-row' : 'flex-col'} gap-1 rounded-sm bg-gd-content p-1`}
+        >
           <textarea
             required
             placeholder="Conteúdo"
@@ -165,53 +246,57 @@ export function TextBox() {
             value={textBox.value}
             onKeyDown={(event) => handleKeyDown(event, textBox.id)}
             onChange={(event) => handleChange(event, textBox.id)}
+            readOnly={readOnly}
           />
-          <button
-            type="button"
-            onClick={() => removeTextBox(textBox.id)}
-            className="text-red-500"
-          >
-            Remover
-          </button>
         </div>
       ))}
-      <div className="flex w-full flex-col rounded-sm text-center">
-        <button
-          type="button"
-          onClick={addTextBox}
-          className="flex justify-center rounded-sm bg-gd-collapsable p-1 text-gd-white"
-        >
-          Adicionar Caixa de Texto
-        </button>
-      </div>
+      {isAuthor && (
+        <div className="flex w-full flex-col rounded-sm text-center">
+          <button
+            type="button"
+            onClick={addTextBox}
+            className="flex justify-center rounded-sm bg-gd-collapsable p-1 text-gd-white"
+          >
+            Adicionar Caixa de Texto
+          </button>
+        </div>
+      )}
     </div>
   );
 }
 
-export default function CreateArchive() {
-  const { user } = useLoaderData<{
+export default function EditArchive() {
+  const { user, archive, isAuthor, author } = useLoaderData<{
     user: {
       id: string;
       username: string;
       stars: number;
       mentions: number;
       archives: string[];
+    } | null;
+    archive: {
+      id: string;
+      title: string;
+      content: string;
+      description: string;
     };
+    isAuthor: boolean;
+    author: string | null;
   }>();
   const actionData = useActionData<{ error?: string }>();
   const [message, setMessage] = useState<string | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (actionData?.error) {
       setMessage(actionData.error);
     } else if (actionData) {
-      setMessage('Arquivo criado com sucesso!');
+      setMessage('Arquivo atualizado com sucesso!');
     }
   }, [actionData]);
 
   return (
     <Form method="post">
-      <input type="hidden" name="userId" value={user.id} />
+      <input type="hidden" name="userId" value={user?.id || ''} />
       <div id="Perfil" className="flex h-full w-full flex-col gap-1 rounded-sm">
         {message && (
           <div className="bg-gd-header-1 text-gd-white p-2 rounded-sm">
@@ -237,12 +322,12 @@ export default function CreateArchive() {
             className="flex flex-1 flex-col items-center gap-1 rounded-sm bg-gd-content p-1"
           >
             <h1 className="w-full rounded-sm bg-gd-header-1 text-center text-gd-white">
-              Editar Arquivo
+              {isAuthor ? 'Editar Arquivo' : 'Visualizar Arquivo'}
             </h1>
             <NoInputField
               icon={<FaUserAlt />}
               bg_color="bg-gd-header-1"
-              data={`${user.username}`}
+              data={`${isAuthor ? user?.username : author || 'Desconhecido'}`}
               data_type="Autor"
             />
             <ArchiveData
@@ -250,6 +335,8 @@ export default function CreateArchive() {
               bg_color="bg-gd-header-1"
               data_type="Título"
               data_name="title"
+              defaultValue={archive.title}
+              readOnly={!isAuthor}
             />
           </div>
           <div
@@ -263,25 +350,29 @@ export default function CreateArchive() {
               required
               placeholder="Descrição"
               name="description"
-              className="h-full w-full resize-none overflow-x-hidden rounded-sm bg-gd-container-nav px-2 text-gd-white"
+              className="h-full w-full resize-none overflow-x-hidden rounded-sm bg-gd-container-nav px-2 text-gd-white focus:outline-none"
               rows={2}
+              defaultValue={archive.description}
+              readOnly={!isAuthor}
             />
           </div>
         </div>
 
         <div className="flex flex-1 flex-col items-center rounded-sm">
-          <TextBox />
+          <TextBox defaultValue={archive.content} readOnly={!isAuthor} isAuthor={isAuthor} />
         </div>
 
-        <div className="flex justify-center mt-4">
-          <button
-            type="submit"
-            className="flex items-center justify-center gap-1 rounded-sm bg-gd-white px-2 font-semibold text-gd-content"
-          >
-            <p>Enviar</p>
-            <RiFileUploadFill />
-          </button>
-        </div>
+        {isAuthor && (
+          <div className="flex justify-center mt-4">
+            <button
+              type="submit"
+              className="flex items-center justify-center gap-1 rounded-sm bg-gd-white px-2 font-semibold text-gd-content"
+            >
+              <p>Enviar</p>
+              <RiFileUploadFill />
+            </button>
+          </div>
+        )}
       </div>
     </Form>
   );

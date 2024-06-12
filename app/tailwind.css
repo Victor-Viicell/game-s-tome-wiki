@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.drop-indicator {
+  @apply bg-gd-prop-blue;
+}
+
+.dragging {
+  opacity: 0.5;
+}
+
+.resize-x {
+  resize: horizontal;
+  overflow: auto;
+}
+
+.drop-indicator-horizontal {
+  @apply bg-gd-prop-blue;
+}
+
+.drop-indicator-vertical {
+  @apply bg-gd-prop-blue;
+}

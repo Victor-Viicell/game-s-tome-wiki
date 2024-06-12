@@ -6,7 +6,6 @@ import type { LoaderFunction } from '@remix-run/node';
 import { Xresize } from '~/components/generalcomponents';
 import Sidebar from '~/components/sidebar';
 import { Container } from '~/components/generalcomponents';
-
 export const loader: LoaderFunction = async ({ request }) => {
   let user = null;
   try {
@@ -27,16 +26,17 @@ export default function App() {
   console.log('Usuário logado:', user);
 
   return (
-    <div className="flex h-full w-full flex-col">
-      <Navbar />
-      <div className="flex h-full w-full flex-row">
-        <Xresize>
-          <Sidebar />
-        </Xresize>
-        <Container>
-          <Outlet />
-        </Container>
+
+      <div className="flex h-full w-full flex-col">
+        <Navbar />
+        <div className="flex h-full w-full flex-row">
+          <Xresize>
+            <Sidebar />
+          </Xresize>
+          <Container>
+            <Outlet />
+          </Container>
+        </div>
       </div>
-    </div>
   );
 }

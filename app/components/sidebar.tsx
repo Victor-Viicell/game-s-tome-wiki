@@ -3,6 +3,8 @@ import { AiFillHome } from "react-icons/ai";
 import { NavLink } from '@remix-run/react';
 import { FaFolderOpen } from 'react-icons/fa';
 
+// Removemos a importação do SidebarContext
+
 export function MenuOption({ to, icon, bg_color, title }: any) {
   return (
     <NavLink
@@ -21,9 +23,12 @@ export function MenuOption({ to, icon, bg_color, title }: any) {
 
 export function OpenWiki() {
   return (
-    <div className="flex h-full w-full flex-col rounded-sm rounded-br-2xl bg-gd-content p-1">
+    <div className="flex h-full w-full flex-col rounded-sm rounded-br-2xl bg-gd-content p-1 gap-1">
       <p className="h-fit w-full rounded-sm bg-gd-header-1 text-center text-gd-white">
-        Paginas Abertas
+        Páginas Abertas
+      </p>
+      <p className="h-fit w-full rounded-sm bg-gd-header-2 text-center text-gd-yellow">
+        Em andamento...
       </p>
     </div>
   );
@@ -42,22 +47,23 @@ export function Container() {
         bg_color="bg-gd-header-1"
       />
       <MenuOption 
-      to={'/app/wikis/files'}
-      icon={<FaFolderOpen />}
-      title="Arquivos"
-      bg_color="bg-gd-header-1"
+        to={'/app/wikis/files'}
+        icon={<FaFolderOpen />}
+        title="Arquivos"
+        bg_color="bg-gd-header-1"
       />
       <MenuOption 
-      to={'/app/wikis/videos'}
-      icon={<MdOutlineOndemandVideo />}
-      title="Videos"
-      bg_color="bg-gd-header-1"
+        to={'/app/wikis/videos'}
+        icon={<MdOutlineOndemandVideo />}
+        title="Videos"
+        bg_color="bg-gd-header-1"
       />
     </div>
   );
 }
 
 export default function Sidebar() {
+
   return (
     <div className="flex h-full w-full flex-col gap-1 overflow-hidden">
       <Container />
